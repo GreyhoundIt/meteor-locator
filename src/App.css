@@ -1,5 +1,7 @@
 .App {
   text-align: center;
+  background-color: #56EDF5;
+  min-height: 1vmax;
 }
 
 .App-logo {
@@ -23,6 +25,19 @@
   color: #61dafb;
 }
 
+.header, .footer{
+  background-color: #00aaff;
+}
+.marker_button{
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.marker_button img {
+  width: 5px;
+  height: 5px;
+}
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
