@@ -1,12 +1,13 @@
 import React from "react";
 import { formatDate } from "../helpers/date";
 import 'bootstrap/dist/css/bootstrap.min.css'
-import { Container, Table, Spinner, Alert } from 'reactstrap';
+import { Container, Spinner, Alert } from 'reactstrap';
 
 // import Map from "./Map";
 import P5Wrapper from 'react-p5-wrapper';
 import sketch from '../sketches/sketch';
 import Meteor from "./Meteor";
+import {Table} from "antd"
 
 class Meteors extends React.Component {
 
@@ -15,7 +16,7 @@ class Meteors extends React.Component {
         filteredData: [],
         searchTerm: "",
         loading: true,
-        hasError: false
+        hasError: false,
     };
 
     getInitialData = () =>
@@ -63,6 +64,59 @@ class Meteors extends React.Component {
         const { initialData, filteredData, loading, hasError} = this.state;
         const data = filteredData.length ? filteredData : initialData;
 
+        const columns = [
+            {
+                title: 'Name',
+                dataIndex: 'name',
+                key: 'name',
+                sorter: (a, b) => (a.name > b.name) - (a.name < b.name),
+                defaultSortOrder: 'ascend',
+            },
+            {
+                title: 'Id',
+                dataIndex: 'id',
+                key: 'id',
+            },
+            {
+                title: 'NameType',
+                dataIndex: 'nametype',
+                key: 'nametype',
+            },
+            {
+                title: 'Recclass',
+                dataIndex: 'recclass',
+                key: 'recclass',
+            },
+            {
+                title: 'Mass(g)',
+                dataIndex: 'mass',
+                key: 'mass',
+                defaultSortOrder: 'descend',
+                sorter: (a, b) => a.mass - b.mass,
+            },
+            {
+                title: 'Fall',
+                dataIndex: 'fall',
+                key: 'fall',
+            },
+            {
+                title: 'Year',
+                dataIndex: 'year',
+                key: 'year',
+                render: (year) => formatDate(year),
+            },
+            {
+                title: 'Latitude',
+                dataIndex: 'reclat',
+                key: 'reclat',
+            },
+            {
+                title: 'Longitude',
+                dataIndex: 'reclong',
+                key: 'reclong',
+            }
+        ];
+
         if(loading === true) {
             return (
                 <div>
@@ -86,28 +140,10 @@ class Meteors extends React.Component {
                                 onChange={ev => this.handleInput(ev)}
                             />
                     </div>
-                    {/*<P5Wrapper sketch={sketch} data={data}></P5Wrapper>*/}
-                        <Table striped dark responsive >
-                            <thead>
-                            <tr>
-                                <td>id</td>
-                                <td>Name</td>
-                                <td>Name Type</td>
-                                <td>Fall</td>
-                                <td>Year</td>
-                                <td>Mass(g)</td>
-                                <td>Rec Class</td>
-                                <td>Lat</td>
-                                <td>Long</td>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {data.slice(0,100).map((meteor) => (
-                                <Meteor key={meteor.id} meteor={meteor}/>
-                            ))}
-                            </tbody>
-                        </Table>
-                    <p> Total {data.length}</p>
+                        <P5Wrapper sketch={sketch} data={data}></P5Wrapper>
+                    <Table dataSource={data} columns={columns} pagination={{ pageSize: 25 }} total={data.length}
+                            />
+                    <p> Total Meteors Found {data.length}</p>
                 </Container>
             );
         }
