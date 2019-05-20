@@ -1,12 +1,14 @@
 import React from "react";
-import { formatDate } from "../helpers/date";
 import 'bootstrap/dist/css/bootstrap.min.css'
-import { Container, Table, Spinner, Alert } from 'reactstrap';
+import { Container} from 'reactstrap';
 
-// import Map from "./Map";
 import P5Wrapper from 'react-p5-wrapper';
 import sketch from '../sketches/sketch';
-import Meteor from "./Meteor";
+import MeteorsTable from "./MeteorsTable";
+import AlertDanger from "./AlertDanger";
+import Loading from "./Loading";
+import Total from "./Total";
+
 
 class Meteors extends React.Component {
 
@@ -15,7 +17,7 @@ class Meteors extends React.Component {
         filteredData: [],
         searchTerm: "",
         loading: true,
-        hasError: false
+        hasError: false,
     };
 
     getInitialData = () =>
@@ -61,20 +63,16 @@ class Meteors extends React.Component {
 
     render() {
         const { initialData, filteredData, loading, hasError} = this.state;
-        const data = filteredData.length ? filteredData : initialData;
+        let data = filteredData.length ? filteredData : initialData;
+        let total = data.length;
 
         if(loading === true) {
             return (
-                <div>
-                    Loading data....
-                    <Spinner color="light" />
-                </div>
+               <Loading/>
             );
         } else if (hasError === true) {
             return  (
-                <Alert color="danger">
-                    Sorry there was an error loading  API please try again later
-                </Alert>
+                <AlertDanger/>
             )
         } else {
             return (
@@ -86,28 +84,10 @@ class Meteors extends React.Component {
                                 onChange={ev => this.handleInput(ev)}
                             />
                     </div>
-                    {/*<P5Wrapper sketch={sketch} data={data}></P5Wrapper>*/}
-                        <Table striped dark responsive >
-                            <thead>
-                            <tr>
-                                <td>id</td>
-                                <td>Name</td>
-                                <td>Name Type</td>
-                                <td>Fall</td>
-                                <td>Year</td>
-                                <td>Mass(g)</td>
-                                <td>Rec Class</td>
-                                <td>Lat</td>
-                                <td>Long</td>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {data.slice(0,100).map((meteor) => (
-                                <Meteor key={meteor.id} meteor={meteor}/>
-                            ))}
-                            </tbody>
-                        </Table>
-                    <p> Total {data.length}</p>
+                    <P5Wrapper sketch={sketch} data={data}></P5Wrapper>
+
+                    <MeteorsTable data={data} />
+                    <Total total={total}/>
                 </Container>
             );
         }
