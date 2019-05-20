@@ -1,13 +1,14 @@
 import React from "react";
-import { formatDate } from "../helpers/date";
 import 'bootstrap/dist/css/bootstrap.min.css'
-import { Container, Spinner, Alert } from 'reactstrap';
+import { Container} from 'reactstrap';
 
-// import Map from "./Map";
 import P5Wrapper from 'react-p5-wrapper';
 import sketch from '../sketches/sketch';
-import Meteor from "./Meteor";
-import {Table} from "antd"
+import MeteorsTable from "./MeteorsTable";
+import AlertDanger from "./AlertDanger";
+import Loading from "./Loading";
+import Total from "./Total";
+
 
 class Meteors extends React.Component {
 
@@ -62,73 +63,16 @@ class Meteors extends React.Component {
 
     render() {
         const { initialData, filteredData, loading, hasError} = this.state;
-        const data = filteredData.length ? filteredData : initialData;
-
-        const columns = [
-            {
-                title: 'Name',
-                dataIndex: 'name',
-                key: 'name',
-                sorter: (a, b) => (a.name > b.name) - (a.name < b.name),
-                defaultSortOrder: 'ascend',
-            },
-            {
-                title: 'Id',
-                dataIndex: 'id',
-                key: 'id',
-            },
-            {
-                title: 'NameType',
-                dataIndex: 'nametype',
-                key: 'nametype',
-            },
-            {
-                title: 'Recclass',
-                dataIndex: 'recclass',
-                key: 'recclass',
-            },
-            {
-                title: 'Mass(g)',
-                dataIndex: 'mass',
-                key: 'mass',
-                defaultSortOrder: 'descend',
-                sorter: (a, b) => a.mass - b.mass,
-            },
-            {
-                title: 'Fall',
-                dataIndex: 'fall',
-                key: 'fall',
-            },
-            {
-                title: 'Year',
-                dataIndex: 'year',
-                key: 'year',
-                render: (year) => formatDate(year),
-            },
-            {
-                title: 'Latitude',
-                dataIndex: 'reclat',
-                key: 'reclat',
-            },
-            {
-                title: 'Longitude',
-                dataIndex: 'reclong',
-                key: 'reclong',
-            }
-        ];
+        let data = filteredData.length ? filteredData : initialData;
+        let total = data.length;
 
         if(loading === true) {
             return (
-                <div>
-                    Loading data....
-                    <Spinner color="light" />
-                </div>
+               <Loading/>
             );
         } else if (hasError === true) {
             return  (
-                <Alert color="danger">
-                    Sorry there was an error loading  API please try again later
-                </Alert>
+                <AlertDanger/>
             )
         } else {
             return (
@@ -140,10 +84,10 @@ class Meteors extends React.Component {
                                 onChange={ev => this.handleInput(ev)}
                             />
                     </div>
-                        <P5Wrapper sketch={sketch} data={data}></P5Wrapper>
-                    <Table dataSource={data} columns={columns} pagination={{ pageSize: 25 }} total={data.length}
-                            />
-                    <p> Total Meteors Found {data.length}</p>
+                    <P5Wrapper sketch={sketch} data={data}></P5Wrapper>
+
+                    <MeteorsTable data={data} />
+                    <Total total={total}/>
                 </Container>
             );
         }
