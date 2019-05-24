@@ -58,7 +58,7 @@ const columns = [
     }
 ];
 const MeteorsTable = ({data}) => (
-    <Table dataSource={data} columns={columns} pagination={{ pageSize: 25 }} total={data.length}
+    <Table rowKey={data => data.id} dataSource={data} columns={columns} pagination={{ pageSize: 25 }} total={data.length}
     />
 );
 
