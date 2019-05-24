@@ -1,7 +1,8 @@
 import React from "react";
 import {formatDate} from "../helpers/date";
-import {Table, Pagination} from "antd"
-import {Container} from "reactstrap";
+import {formatMass} from "../helpers/numbers";
+import {Table} from "antd"
+
 
 const columns = [
     {
@@ -32,6 +33,7 @@ const columns = [
         key: 'mass',
         defaultSortOrder: 'descend',
         sorter: (a, b) => a.mass - b.mass,
+        render: (mass) => formatMass(mass),
     },
     {
         title: 'Fall',

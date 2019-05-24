@@ -48,7 +48,7 @@ class Meteors extends React.Component {
     filterByName = searchTerm => {
         const { initialData } = this.state;
 
-        const filteredData = initialData.filter(meteor =>
+        let filteredData = initialData.filter(meteor =>
             meteor.name.toLowerCase().includes(searchTerm.toLowerCase())
         );
 
