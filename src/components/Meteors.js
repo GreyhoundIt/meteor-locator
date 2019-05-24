@@ -85,9 +85,10 @@ class Meteors extends React.Component {
     componentWillMount = () => this.getData();
 
     render() {
-        const { initialData, filteredData, loading, hasError } = this.state;
+        const { initialData, filteredData, loading, hasError, limit } = this.state;
         let data = filteredData.length ? filteredData : initialData;
         let total = data.length;
+
 
         if (loading === true) {
             return <Loading />
@@ -95,7 +96,7 @@ class Meteors extends React.Component {
             return <AlertDanger />
         } else {
             return (
-                <Container>
+                <div className="meteors">
                     <div className="search">
                         <input
                             type="text"
@@ -103,11 +104,10 @@ class Meteors extends React.Component {
                             onChange={ev => this.handleInput(ev)}
                         />
                     </div>
-                    <P5Wrapper sketch={sketch} data={data} />
-
-                    <MeteorsTable data={data} />
-                    <Total total={total} />
-                </Container>
+                    <P5Wrapper className='map' sketch={sketch} data={data} />
+                    <Total total={total} limit={limit} />
+                    <MeteorsTable className="meteorsTable" data={data} />
+                </div>
             )
         }
     }
