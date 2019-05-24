@@ -1,3 +1,29 @@
+
+##METEOR LOCATOR APP
+This app was created as part of the Tier 3 Solo challenge prework for chingu. 
+
+Notes:
+I am not a react developer but choose this a sI wanted a nice lighter front end then Rails and wanted to use state.
+
+The initial call to the API only selected the first 1000 records. Initally I hard coded the 45716 in to the APi call. 
+Until someone mentioned you could use count in a query. So now I am doing two API calls one to get the count of records, and a second to then get all records. 
+
+They may be a better way of doing this, but once I have them all in state I wanted to manipulate the data on the client. Rather then making multiple API calls. 
+
+I was going to do my own pagination on a Meteor objects, until I discovered ANT tables which does most of the heavy lifting. 
+
+I have set a 5 second time limit on both the api calls for if the API is slow, though this should never hit. 
+There is a "Loading" state and an "Error" state which is triggered by the catch statements. 
+
+I originally wanted to use Mapbox react but couldnt get it to render correctly. SO I have fallen back to 
+using p5.js which I have used to plot Eathquake data on before, however this is the first time using the react wrapper around it.
+I have limited the rending to 100 meteors on the map to keep the app snappy. 
+
+I have added a few helpers to format data and numbers. 
+
+Search is more fuzzy search then a direct comparison starting from the beginning of the string. 
+Also if nothing is matched then I will return all meteors. 
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
